@@ -1,0 +1,145 @@
+@import "compass/utilities/sprites/base";
+
+// General Sprite Defaults
+// You can override them before you import this file.
+$logo-sprite-dimensions : false !default;
+$logo-use-percentages   : false !default;
+$logo-position          : 0% !default;
+$logo-spacing           : 0 !default;
+$logo-repeat            : no-repeat !default;
+$logo-prefix            : '' !default;
+$logo-clean-up          : true !default;
+$logo-layout            : vertical !default;
+$logo-inline            : false !default;
+$logo-sort-by           : 'none' !default;
+$logo-class-separator   : $default-sprite-separator !default;
+$logo-sprite-base-class : ".logo#{$logo-class-separator}sprite" !default;
+
+  
+ // These variables control the generated sprite output
+ // You can override them selectively before you import this file.
+ 
+   $logo-analyzer-position: $logo-position !default;
+   $logo-analyzer-spacing:  $logo-spacing !default;
+   $logo-analyzer-repeat:   $logo-repeat !default;
+ 
+   $logo-equation-position: $logo-position !default;
+   $logo-equation-spacing:  $logo-spacing !default;
+   $logo-equation-repeat:   $logo-repeat !default;
+ 
+   $logo-music-position: $logo-position !default;
+   $logo-music-spacing:  $logo-spacing !default;
+   $logo-music-repeat:   $logo-repeat !default;
+ 
+   $logo-search-position: $logo-position !default;
+   $logo-search-spacing:  $logo-spacing !default;
+   $logo-search-repeat:   $logo-repeat !default;
+ 
+   $logo-shape-position: $logo-position !default;
+   $logo-shape-spacing:  $logo-spacing !default;
+   $logo-shape-repeat:   $logo-repeat !default;
+ 
+   $logo-superimposed-position: $logo-position !default;
+   $logo-superimposed-spacing:  $logo-spacing !default;
+   $logo-superimposed-repeat:   $logo-repeat !default;
+ 
+   $logo-translate-position: $logo-position !default;
+   $logo-translate-spacing:  $logo-spacing !default;
+   $logo-translate-repeat:   $logo-repeat !default;
+ 
+   $logo-write-position: $logo-position !default;
+   $logo-write-spacing:  $logo-spacing !default;
+   $logo-write-repeat:   $logo-repeat !default;
+ 
+
+ $logo-sprites: sprite-map("logo/*.png",
+ 
+   $logo-analyzer-position: $logo-analyzer-position, 
+   $logo-analyzer-spacing:  $logo-analyzer-spacing, 
+   $logo-analyzer-repeat:   $logo-analyzer-repeat,
+ 
+   $logo-equation-position: $logo-equation-position, 
+   $logo-equation-spacing:  $logo-equation-spacing, 
+   $logo-equation-repeat:   $logo-equation-repeat,
+ 
+   $logo-music-position: $logo-music-position, 
+   $logo-music-spacing:  $logo-music-spacing, 
+   $logo-music-repeat:   $logo-music-repeat,
+ 
+   $logo-search-position: $logo-search-position, 
+   $logo-search-spacing:  $logo-search-spacing, 
+   $logo-search-repeat:   $logo-search-repeat,
+ 
+   $logo-shape-position: $logo-shape-position, 
+   $logo-shape-spacing:  $logo-shape-spacing, 
+   $logo-shape-repeat:   $logo-shape-repeat,
+ 
+   $logo-superimposed-position: $logo-superimposed-position, 
+   $logo-superimposed-spacing:  $logo-superimposed-spacing, 
+   $logo-superimposed-repeat:   $logo-superimposed-repeat,
+ 
+   $logo-translate-position: $logo-translate-position, 
+   $logo-translate-spacing:  $logo-translate-spacing, 
+   $logo-translate-repeat:   $logo-translate-repeat,
+ 
+   $logo-write-position: $logo-write-position, 
+   $logo-write-spacing:  $logo-write-spacing, 
+   $logo-write-repeat:   $logo-write-repeat,
+ 
+ $layout   : $logo-layout,
+ $cleanup  : $logo-clean-up,
+ $spacing  : $logo-spacing,
+ $position : $logo-position,
+ $sort-by  : $logo-sort-by
+ );
+
+
+// All sprites should extend this class
+// The logo-sprite mixin will do so for you.
+@if $logo-inline {
+  #{$logo-sprite-base-class} {
+    background-image: inline-sprite($logo-sprites);
+  } 
+} @else {
+  #{$logo-sprite-base-class} {
+    background-image: sprite-url($logo-sprites);
+    background-repeat: no-repeat;
+  }
+}
+//sass functions to return the dimensions of a sprite image as units
+
+  @function logo-sprite-width($name) {
+    @return sprite-width($logo-sprites, $name);
+  }
+
+  @function logo-sprite-height($name) {
+    @return sprite-height($logo-sprites, $name);
+  }
+
+
+// Use this to set the dimensions of an element
+// based on the size of the original image.
+@mixin logo-sprite-dimensions($name) {
+  @include sprite-dimensions($logo-sprites, $name)
+}
+
+// Move the background position to display the sprite.
+@mixin logo-sprite-position($name, $offset-x: 0, $offset-y: 0, $use-percentages: $logo-use-percentages) {
+  @include sprite-background-position($logo-sprites, $name, $offset-x, $offset-y, $use-percentages)
+}
+
+// Extends the sprite base class and set the background position for the desired sprite.
+// It will also apply the image dimensions if $dimensions is true.
+@mixin logo-sprite($name, $dimensions: $logo-sprite-dimensions, $offset-x: 0, $offset-y: 0, $use-percentages: $logo-use-percentages, $separator: $logo-class-separator) {
+  @extend #{$logo-sprite-base-class};
+  @include sprite($logo-sprites, $name, $dimensions, $offset-x, $offset-y, $use-percentages, $separator: $separator);
+}
+
+@mixin logo-sprites($sprite-names, $dimensions: $logo-sprite-dimensions, $prefix: sprite-map-name($logo-sprites), $offset-x: 0, $offset-y: 0, $use-percentages: $logo-use-percentages, $separator: $logo-class-separator) {
+  @include sprites($logo-sprites, $sprite-names, $logo-sprite-base-class, $dimensions, $prefix, $offset-x, $offset-y, $use-percentages, $separator: $separator)
+}
+
+// Generates a class for each sprited image.
+@mixin all-logo-sprites($dimensions: $logo-sprite-dimensions, $prefix: sprite-map-name($logo-sprites), $offset-x: 0, $offset-y: 0, $use-percentages: $logo-use-percentages, $separator: $logo-class-separator) {
+  @include logo-sprites(analyzer equation music search shape superimposed translate write, $dimensions, $prefix, $offset-x, $offset-y, $use-percentages, $separator: $separator);
+}
